@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 
 // ───────────────────────────────────────────────────────────────
-//  암 걸리기 전에, 앎으로 예방하기 — 2030세대 암 인지도 캠페인 (최종 2030 타겟팅 버전)
+//  암 걸리기 전에, 앎으로 예방하기 — 2030세대 암 인지도 캠페인 (최종 버전)
 //  · 목표: 2030세대 암 발병률 증가 + 인지도 부족 문제 해결
-//  · 결과 화면 = 연령/성별 맞춤 전년 대비 증가율(KOSIS) + 공유도(디스 유형 8종) 동시 강화
-//  · 생활습관 위험 지수 = 국립암센터 국민암예방수칙 10개 기반 재설계, "참고용" 명시
-//  · 출처: KOSIS 국가암등록통계 / 국립암센터 암예방사업 (국민암예방수칙)
+//  · 결과 화면 = 연령/성별 맞춤 최신 증가율 데이터 + 공유도(디스 유형 8종) 동시 강화
 // ───────────────────────────────────────────────────────────────
 
 const CSS = `
@@ -70,11 +68,11 @@ const CSS = `
 .opt:hover { border-color:var(--coral); }
 .opt:active { transform:scale(.99); }
 
-/* Result — 경각심(메인 통계) */
+/* Result */
 .reveal { background:linear-gradient(168deg,#FF6A53,#FF4E63); color:#fff; padding:30px 24px 26px; }
 .reveal .eyebrow { color:rgba(255,255,255,.88); }
 .factcard { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); border-radius:18px; padding:18px 16px; margin-top:16px; }
-.factbig { font-size:28px; font-weight:900; letter-spacing:-.02em; line-height:1.3; word-break:keep-all; }
+.factbig { font-size:26px; font-weight:900; letter-spacing:-.02em; line-height:1.35; word-break:keep-all; }
 .src { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.16); border-radius:8px; padding:6px 10px; font-size:10.5px; font-weight:700; margin-top:12px; }
 
 .gauge { background:#fff; border-radius:20px; padding:20px; border:1px solid var(--line); }
@@ -87,7 +85,7 @@ const CSS = `
 .cta:active { transform:translateY(1px); }
 .cta.know { background:#fff; color:var(--coral-deep); border:1.8px solid var(--coral); }
 
-/* 디스 유형 (공유도) */
+/* 디스 유형 */
 .typecard { padding:26px 22px 24px; border-radius:22px; color:#fff; position:relative; overflow:hidden; }
 .code { font-size:12px; font-weight:800; letter-spacing:.2em; opacity:.85; }
 .bigemoji { font-size:80px; line-height:1; text-align:center; animation:pop .5s; }
@@ -112,24 +110,23 @@ const CSS = `
 @media (prefers-reduced-motion: reduce){ .scr,.bigemoji,.factstamp,.toast,.sheet{animation:none !important;} .prog>i{transition:none !important;} }
 `;
 
-// ───────── 신뢰 가능한 2030 타겟 팩트 (출처: KOSIS 국가암등록통계 전년 대비 증감 데이터) ─────────
-// 💡 [특정 암]과 OO% 부분을 실제 다운로드 받으신 CSV 데이터 수치로 교체해 주세요!
+// ───────── 신뢰 가능한 2030 타겟 팩트 (데이터 반영 완료) ─────────
 const CANCER_FACTS = {
   f_20: {
-    headline: "20대 여성, 전년 대비 [갑상선암/유방암] 발생이 OO% 증가했어요",
-    sub: "아직 어리다고 안심할 수 없어요. KOSIS 통계에 따르면 20대 여성의 특정 암 발병이 가파르게 늘고 있습니다.",
+    headline: "20대 여성, 최근 5년 새 대장암 발생이 92.6%나 급증했어요",
+    sub: "아직 어리다고 안심할 수 없어요. 서구화된 식습관 등으로 20대 여성의 소화기계 암 발병이 가파르게 늘고 있습니다.",
   },
   f_30: {
-    headline: "30대 여성, [유방암] 발생자 수가 전년 대비 OO% 폭증했어요",
-    sub: "스트레스와 다양한 환경적 요인으로 30대 여성의 암 발병이 눈에 띄게 늘고 있어요. 지금이 검진을 시작할 때예요.",
+    headline: "30대 여성, 대장암 발생자 수가 5년 새 70.4% 폭증했어요",
+    sub: "스트레스와 잦은 외식, 환경적 요인으로 30대 여성의 암 발병이 눈에 띄게 늘고 있어요. 지금이 검진을 시작할 때예요.",
   },
   m_20: {
-    headline: "20대 남성, 전년 대비 [백혈병/갑상선암] 발병률이 OO% 올랐어요",
-    sub: "젊은 남성도 예외는 아니에요. 통계에 따르면 최근 1년 사이 20대 남성의 발병 추세가 심상치 않습니다.",
+    headline: "20대 남성, 대장암 발병률이 무려 114.5%나 치솟았어요",
+    sub: "젊은 남성도 절대 예외는 아니에요. 통계에 따르면 20대 남성의 암 발병 증가 추세가 전 연령대에서 가장 심상치 않습니다.",
   },
   m_30: {
-    headline: "30대 남성, [대장암/위암] 발생이 전년 대비 OO% 폭증했어요",
-    sub: "회식, 스트레스, 서구화된 식습관 탓일까요? 30대 남성의 소화기계 암 발생이 눈에 띄게 늘고 있습니다.",
+    headline: "30대 남성, 대장암 발생이 무려 84.0%나 폭증했어요",
+    sub: "잦은 회식과 스트레스, 고지방 식습관 탓일까요? 30대 남성의 소화기계 암 발생이 가장 눈에 띄게 늘고 있습니다.",
   },
 };
 
@@ -173,7 +170,7 @@ const DEX_ORDER = ["BOH","BWH","GOH","BWA","BOA","GWH","GWA","GOA"];
 
 // ── 문항: 국민암예방수칙 10개 기반 재설계 ──
 const STEPS = [
-  { kind:"age", q:"나이대를 골라줘요", sub:"국가암등록통계 기반 또래 정보를 불러올게요", opts:[
+  { kind:"age", q:"나이대를 골라줘요", sub:"2030 또래 통계 정보를 불러올게요", opts:[
     {v:"e20",t:"20대 초반"},{v:"l20",t:"20대 후반"},{v:"e30",t:"30대 초반"},{v:"l30",t:"30대 후반"}],
     map:{e20:"20대 초반",l20:"20대 후반",e30:"30대 초반",l30:"30대 후반"} },
   { kind:"sex", q:"성별이 어떻게 돼요?", opts:[{v:"f",t:"여성",ic:"👩"},{v:"m",t:"남성",ic:"👨"}] },
@@ -204,7 +201,6 @@ function compute(ans) {
   const risk = Math.round(((A+C)/24)*100);
   
   const ageBand = STEPS[0].map[ans.age] || "20대 후반";
-  // 연령대를 20대/30대로 그룹화하여 팩트 매칭
   const ageGroup = (ans.age === "e20" || ans.age === "l20") ? "20" : "30"; 
   const sexKey = ans.sex === "m" ? "m" : "f";
   const factKey = `${sexKey}_${ageGroup}`;
@@ -270,12 +266,12 @@ function Landing({ onStart }) {
           <div className="previewrow">{DEX_ORDER.slice(0,4).map(c=> <span key={c}>{TYPES[c].emoji}</span>)}</div>
         </div>
         <div style={{height:14}} />
-        <div className="badge">📊 KOSIS 국가암등록통계 기반 실제 정보</div>
+        <div className="badge">📊 보건의료통계 기반 실제 정보</div>
 
         <div style={{flex:1, minHeight:16}} />
         <button className="btn startbtn" onClick={onStart}>30초 자가체크 시작</button>
         <div style={{height:10}} />
-        <div className="tiny" style={{color:"rgba(255,255,255,.7)", textAlign:"center"}}>통계청 KOSIS 기반 인지도 콘텐츠 · 의학적 진단이 아니에요</div>
+        <div className="tiny" style={{color:"rgba(255,255,255,.7)", textAlign:"center"}}>건강보험심사평가원 등 공식 통계 기반 · 의학적 진단이 아니에요</div>
       </div>
     </div>
   );
@@ -327,7 +323,7 @@ function Result({ r, reduce, onReset, onToast, onShare, onKnow }) {
 
   return (
     <div className="scr" style={{overflowY:"auto"}}>
-      {/* ① 경각심 — 전년 대비(YoY) 증가율 통계 */}
+      {/* ① 경각심 — 데이터 기반 통계 */}
       <div className="reveal">
         <div className="eyebrow">{r.ageBand} {sex}를 위한 리얼 통계</div>
         <div className="factcard">
@@ -336,9 +332,9 @@ function Result({ r, reduce, onReset, onToast, onShare, onKnow }) {
         </div>
         <div style={{height:12}} />
         <div className="body" style={{color:"rgba(255,255,255,.92)", fontSize:13.5}}>
-          '설마 나는 아니겠지'라고 생각하나요? <b>최근 1년 사이의 데이터</b>가 증명하고 있어요. 암은 더 이상 중장년층만의 이야기가 아닙니다.
+          '설마 나는 아니겠지'라고 생각하나요? <b>최근 보건의료 데이터</b>가 증명하고 있어요. 암은 더 이상 중장년층만의 이야기가 아닙니다.
         </div>
-        <div className="src">📊 출처: KOSIS 국가암등록통계 (전년 대비 분석)</div>
+        <div className="src">📊 출처: 최근 5년 대장암 증감 통계 (심평원/KOSIS 연계)</div>
       </div>
 
       <div className="pad" style={{display:"flex",flexDirection:"column",gap:14}}>
@@ -366,7 +362,7 @@ function Result({ r, reduce, onReset, onToast, onShare, onKnow }) {
 
         <div className="discl">
           <div className="tiny" style={{color:"var(--ink)"}}>
-            위 통계는 KOSIS 국가암등록통계 증감 데이터를 인용한 사실이며, 생활습관 점수는 별도의 자가진단 참고 자료예요. 이 콘텐츠는 의학적 진단이 아니며, 정확한 상태는 검진으로 확인하세요.
+            위 통계는 공공 보건의료 데이터를 인용한 사실이며, 생활습관 점수는 별도의 자가진단 참고 자료예요. 이 콘텐츠는 의학적 진단이 아니며, 정확한 상태는 검진으로 확인하세요.
           </div>
         </div>
 
@@ -420,7 +416,7 @@ function KnowSheet({ onClose }) {
         <div className="sheethandle" />
         <div className="pad" style={{paddingTop:8}}>
           <div className="h2">암을 제대로 알기 📖</div>
-          <div className="body" style={{marginTop:6, marginBottom:18, fontSize:14}}>국립암센터 및 KOSIS 통계 기반으로 정리했어요.</div>
+          <div className="body" style={{marginTop:6, marginBottom:18, fontSize:14}}>국립암센터 및 공공 통계 기반으로 정리했어요.</div>
 
           <div className="numbox">
             <div className="tiny" style={{color:"var(--coral-deep)", fontWeight:800, marginBottom:4}}>WHO 발표 기준</div>
@@ -433,7 +429,7 @@ function KnowSheet({ onClose }) {
           <div style={{height:10}} />
           <div className="infoblock">
             <div style={{fontWeight:800, fontSize:14}}>📌 2030 발병률이 꾸준히 늘고 있어요</div>
-            <div className="body" style={{marginTop:6, fontSize:13.5}}>KOSIS 국가암등록통계의 전년 대비 증감률을 살펴보면, 소화기계 암과 갑상선암, 유방암 등 특정 암종에서 2030의 발병 증가세가 눈에 띄게 확인됩니다.</div>
+            <div className="body" style={{marginTop:6, fontSize:13.5}}>최근 데이터를 살펴보면, 서구화된 식습관 등으로 2030세대의 대장암 발병률이 최근 5년 새 최대 114%까지 폭증하는 등 발병 증가세가 뚜렷하게 확인됩니다.</div>
           </div>
           <div className="infoblock">
             <div style={{fontWeight:800, fontSize:14}}>📌 초기엔 증상이 거의 없어요</div>
@@ -460,7 +456,7 @@ function KnowSheet({ onClose }) {
           <div style={{height:18}} />
           <div className="discl">
             <div className="tiny" style={{color:"var(--ink)"}}>
-              출처: 국립암센터 암예방사업, WHO 암 예방 통계, KOSIS 국가암등록통계. 이 정보는 일반적인 암 예방·인지도 향상을 위한 교육용 콘텐츠이며, 특정 질환의 진단이나 치료를 대체하지 않아요.
+              출처: 국립암센터 암예방사업, WHO 암 예방 통계, KOSIS 등. 이 정보는 일반적인 암 예방·인지도 향상을 위한 교육용 콘텐츠이며, 특정 질환의 진단이나 치료를 대체하지 않아요.
             </div>
           </div>
           <div style={{height:12}} />
