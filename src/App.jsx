@@ -272,6 +272,7 @@ function Landing({ onStart }) {
         </div>
         <div style={{height:14}} />
         <div className="badge" style={{ alignSelf: "center" }}>📊 보건의료통계 기반 실제 정보</div>
+        <div style={{height:44}} />
         {/* 👇 수정된 부분 1: 조 이름 강조 (반투명 뱃지 스타일 적용) */}
         <div style={{ 
           alignSelf: "center", /* 가운데 정렬 */
