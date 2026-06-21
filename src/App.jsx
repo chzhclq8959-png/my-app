@@ -211,7 +211,7 @@ function compute(ans) {
 async function shareLink(r, showToast) {
   const sex = r.sexKey==="m" ? "남성" : "여성";
   const t = TYPES[r.code];
-  const url = "https://health-check.2030/" + r.code;
+  const url = "https://my-app-virid-beta.vercel.app/";
   const text = `나는 ${r.ageBand} ${sex} 「${t.name}」였어 😳 너는 무슨 건강 유형? 30초 자가체크 해봐`;
   try { if (navigator.share) { await navigator.share({title:"암 걸리기 전에, 앎으로 예방하기",text,url}); return; } } catch(e){}
   try { await navigator.clipboard.writeText(url); showToast("링크를 복사했어요 🔗 친구에게 보내보세요"); return; } catch(e){}
@@ -388,7 +388,7 @@ function Result({ r, reduce, onReset, onToast, onShare, onKnow }) {
         </div>
 
         <div style={{height:2}} />
-        <button className="btn coral" onClick={onShare}>🔗 친구는 무슨 유형인지 공유하기</button>
+        <button className="btn coral" onClick={onShare}>🔗 친구에게 링크 공유하기</button>
         <button className="btn ghost" onClick={onReset}>다시 체크하기</button>
         <div style={{height:6}} />
       </div>
