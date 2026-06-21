@@ -273,18 +273,14 @@ function Landing({ onStart }) {
         <div style={{height:14}} />
         <div className="badge" style={{ alignSelf: "center" }}>📊 보건의료통계 기반 실제 정보</div>
         <div style={{height:44}} />
-        {/* 👇 수정된 부분 1: 조 이름 강조 (반투명 뱃지 스타일 적용) */}
-        <div style={{ 
-          alignSelf: "center", /* 가운데 정렬 */
-          background: "rgba(0, 0, 0, 0.15)", /* 반투명 어두운 배경으로 대비 효과 */
-          color: "#fff", 
-          padding: "8px 18px", 
-          borderRadius: "99px", 
-          fontWeight: "900", 
-          fontSize: "15px", 
+        {/* 👇 새로 옮긴 조 이름 위치 (시작 버튼 바로 위) */}
+        <div style={{
+          textAlign: "center",
+          color: "rgba(255, 255, 255, 0.9)", /* 글씨를 밝게 해서 눈에 띄게 */
+          fontSize: "15px",
+          fontWeight: "800",
           letterSpacing: "0.05em",
-          marginBottom: "20px",
-          border: "1px solid rgba(255,255,255,0.3)"
+          marginBottom: "14px" /* 버튼과의 간격 */
         }}>
           💡 IT경영및사업화 6조
         </div>
