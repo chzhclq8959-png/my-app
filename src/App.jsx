@@ -251,24 +251,6 @@ function Landing({ onStart }) {
     <div className="scr land">
       <div className="pad">
         <div style={{height:10}} />
-        
-        {/* 👇 수정된 부분 1: 조 이름 강조 (반투명 뱃지 스타일 적용) */}
-        <div style={{ 
-          alignSelf: "center", /* 가운데 정렬 */
-          background: "rgba(0, 0, 0, 0.15)", /* 반투명 어두운 배경으로 대비 효과 */
-          color: "#fff", 
-          padding: "8px 18px", 
-          borderRadius: "99px", 
-          fontWeight: "900", 
-          fontSize: "15px", 
-          letterSpacing: "0.05em",
-          marginBottom: "20px",
-          border: "1px solid rgba(255,255,255,0.3)"
-        }}>
-          💡 IT경영및사업화 6조
-        </div>
-        {/* 👆 여기까지 */}
-
         <div className="eyebrow" style={{ textAlign: "center" }}>2030 암 인지도 캠페인</div>
         <div style={{height:14}} />
         <div className="h1" style={{ textAlign: "center" }}>암 걸리기 전에,<br/>앎으로 예방하기</div>
@@ -290,7 +272,22 @@ function Landing({ onStart }) {
         </div>
         <div style={{height:14}} />
         <div className="badge" style={{ alignSelf: "center" }}>📊 보건의료통계 기반 실제 정보</div>
-
+        {/* 👇 수정된 부분 1: 조 이름 강조 (반투명 뱃지 스타일 적용) */}
+        <div style={{ 
+          alignSelf: "center", /* 가운데 정렬 */
+          background: "rgba(0, 0, 0, 0.15)", /* 반투명 어두운 배경으로 대비 효과 */
+          color: "#fff", 
+          padding: "8px 18px", 
+          borderRadius: "99px", 
+          fontWeight: "900", 
+          fontSize: "15px", 
+          letterSpacing: "0.05em",
+          marginBottom: "20px",
+          border: "1px solid rgba(255,255,255,0.3)"
+        }}>
+          💡 IT경영및사업화 6조
+        </div>
+        {/* 👆 여기까지 */}
         <div style={{flex:1, minHeight:16}} />
         <button className="btn startbtn" onClick={onStart}>30초 자가체크 시작</button>
         <div style={{height:10}} />
