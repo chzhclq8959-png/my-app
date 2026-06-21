@@ -271,22 +271,33 @@ function Landing({ onStart }) {
           <div className="previewrow">{DEX_ORDER.slice(0,4).map(c=> <span key={c}>{TYPES[c].emoji}</span>)}</div>
         </div>
         <div style={{height:14}} />
+{/* 기존 보건의료통계 뱃지 */}
         <div className="badge" style={{ alignSelf: "center" }}>📊 보건의료통계 기반 실제 정보</div>
-        <div style={{height:200}} />
-        {/* 👇 새로 옮긴 조 이름 위치 (시작 버튼 바로 위) */}
+
+        <div style={{flex:1, minHeight:16}} />
+        
+        {/* 👇 방안 2: 버튼 위에 붙어있는 이름표 스타일 */}
         <div style={{
-          textAlign: "center",
-          color: "rgba(255, 255, 255, 0.9)", /* 글씨를 밝게 해서 눈에 띄게 */
-          fontSize: "15px",
+          background: "rgba(255, 255, 255, 0.2)", /* 반투명 하얀색 바탕 */
+          color: "#fff",
+          fontSize: "12px",
           fontWeight: "800",
-          letterSpacing: "0.05em",
-          marginBottom: "14px" /* 버튼과의 간격 */
+          padding: "6px 16px",
+          borderRadius: "14px 14px 0 0", /* 윗부분만 둥글게 */
+          width: "fit-content",
+          margin: "0 auto", /* 가운데 정렬 */
+          letterSpacing: "0.03em"
         }}>
           💡 IT경영및사업화 6조
         </div>
+        <button className="btn startbtn" onClick={onStart} style={{ 
+          borderRadius: "24px", /* 기존 버튼 모서리를 좀 더 둥글게 해서 이름표와 어울리게 */
+          marginTop: "0" /* 이름표와 완벽히 붙이기 */
+        }}>
+          30초 자가체크 시작
+        </button>
         {/* 👆 여기까지 */}
-        <div style={{flex:1, minHeight:16}} />
-        <button className="btn startbtn" onClick={onStart}>30초 자가체크 시작</button>
+
         <div style={{height:10}} />
         <div className="tiny" style={{color:"rgba(255,255,255,.7)", textAlign:"center"}}>건강보험심사평가원 등 공식 통계 기반 · 의학적 진단이 아니에요</div>
       </div>
