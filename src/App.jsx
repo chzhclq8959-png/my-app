@@ -250,26 +250,46 @@ function Landing({ onStart }) {
   return (
     <div className="scr land">
       <div className="pad">
-        <div style={{height:6}} />
-        <div className="eyebrow" style={{ color: "rgba(255, 255, 255, 0.7)", marginBottom: "4px" }}>
-          IT경영및사업화 6조
+        <div style={{height:10}} />
+        
+        {/* 👇 수정된 부분 1: 조 이름 강조 (반투명 뱃지 스타일 적용) */}
+        <div style={{ 
+          alignSelf: "center", /* 가운데 정렬 */
+          background: "rgba(0, 0, 0, 0.15)", /* 반투명 어두운 배경으로 대비 효과 */
+          color: "#fff", 
+          padding: "8px 18px", 
+          borderRadius: "99px", 
+          fontWeight: "900", 
+          fontSize: "15px", 
+          letterSpacing: "0.05em",
+          marginBottom: "20px",
+          border: "1px solid rgba(255,255,255,0.3)"
+        }}>
+          💡 IT경영및사업화 6조
         </div>
-        <div className="eyebrow">2030 암 인지도 캠페인</div>
+        {/* 👆 여기까지 */}
+
+        <div className="eyebrow" style={{ textAlign: "center" }}>2030 암 인지도 캠페인</div>
         <div style={{height:14}} />
-        <div className="h1">암 걸리기 전에,<br/>앎으로 예방하기</div>
+        <div className="h1" style={{ textAlign: "center" }}>암 걸리기 전에,<br/>앎으로 예방하기</div>
         <div style={{height:16}} />
-        <div className="body" style={{color:"rgba(255,255,255,.9)"}}>
+        <div className="body" style={{color:"rgba(255,255,255,.9)", textAlign: "center"}}>
           30초면 돼요. 같은 <b>나이·성별 또래</b>의<br/>진짜 통계를 보고, 오늘 할 수 있는 걸 찾아봐요.
         </div>
         <div style={{height:22}} />
+        
         <div className="bigYou">🫵</div>
-        <div style={{height:16}} />
+        
+        {/* 👇 수정된 부분 2: 이모지와 박스 사이 겹침 해결 */}
+        <div style={{height: 44}} /> {/* 기존 16에서 44로 늘려서 간격 충분히 확보 */}
+        {/* 👆 여기까지 */}
+        
         <div className="preview">
           <div className="tiny" style={{color:"rgba(255,255,255,.75)", marginBottom:9}}>테스트 후엔 이런 유형이 나와요</div>
           <div className="previewrow">{DEX_ORDER.slice(0,4).map(c=> <span key={c}>{TYPES[c].emoji}</span>)}</div>
         </div>
         <div style={{height:14}} />
-        <div className="badge">📊 보건의료통계 기반 실제 정보</div>
+        <div className="badge" style={{ alignSelf: "center" }}>📊 보건의료통계 기반 실제 정보</div>
 
         <div style={{flex:1, minHeight:16}} />
         <button className="btn startbtn" onClick={onStart}>30초 자가체크 시작</button>
