@@ -251,6 +251,9 @@ function Landing({ onStart }) {
     <div className="scr land">
       <div className="pad">
         <div style={{height:6}} />
+        <div className="eyebrow" style={{ color: "rgba(255, 255, 255, 0.7)", marginBottom: "4px" }}>
+          IT경영및사업화 6조
+        </div>
         <div className="eyebrow">2030 암 인지도 캠페인</div>
         <div style={{height:14}} />
         <div className="h1">암 걸리기 전에,<br/>앎으로 예방하기</div>
