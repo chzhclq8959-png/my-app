@@ -276,24 +276,18 @@ function Landing({ onStart }) {
 
         <div style={{flex:1, minHeight:16}} />
         
-        {/* 👇 방안 2: 버튼 위에 붙어있는 이름표 스타일 */}
+        {/* 👇 배경 없이 텍스트만 버튼 바로 위에 바짝 붙이기 */}
         <div style={{
-          background: "rgba(255, 255, 255, 0.2)", /* 반투명 하얀색 바탕 */
-          color: "#fff",
-          fontSize: "12px",
+          color: "rgba(255, 255, 255, 0.95)", /* 배경이 없으니 가독성을 위해 흰색을 더 뚜렷하게 */
+          fontSize: "13px",
           fontWeight: "800",
-          padding: "6px 16px",
-          borderRadius: "14px 14px 0 0", /* 윗부분만 둥글게 */
           width: "fit-content",
-          margin: "0 auto", /* 가운데 정렬 */
+          margin: "0 auto 6px auto", /* 아래쪽 마진을 6px만 주어서 시작 버튼과 촘촘하게 붙임 */
           letterSpacing: "0.03em"
         }}>
           💡 IT경영및사업화 6조
         </div>
-        <button className="btn startbtn" onClick={onStart} style={{ 
-          borderRadius: "24px", /* 기존 버튼 모서리를 좀 더 둥글게 해서 이름표와 어울리게 */
-          marginTop: "0" /* 이름표와 완벽히 붙이기 */
-        }}>
+        <button className="btn startbtn" onClick={onStart}>
           30초 자가체크 시작
         </button>
         {/* 👆 여기까지 */}
